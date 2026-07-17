@@ -1,1 +1,11 @@
 .DS_Store
+**/__pycache__/
+*.py[cod]
+*$py.class
+**/node_modules/
+**/.venv/
+**/dist/
+**/build/
+*.pptx
+*.ppt
+*.log

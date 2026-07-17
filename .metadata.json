@@ -1,6 +1,25 @@
 {
   "version": 1,
   "entries": {
+    "academic-pptx-skill": {
+      "source": "github.com/Gabberflast/academic-pptx-skill",
+      "type": "github",
+      "installed_at": "2026-06-07T23:40:56.7856218+08:00",
+      "repo_url": "https://github.com/Gabberflast/academic-pptx-skill.git",
+      "version": "f77d3a0",
+      "file_hashes": {
+        "Academic_Presentation_Best_Practices_DH_built_with_Claude_2_2026.pdf": "sha256:ad89e2b8e4f276d9e9f25f7f090706906e5aac499a6e8acbd2b712d4094f9945",
+        "README.md": "sha256:ecaa09971f93f827fee304b01d6fae8602ecfd3a28f8b692591056f06ad31abb",
+        "SKILL.md": "sha256:fe744b9778fcffcd9d49b188a2dcfc6af5a613617b5b7992198543d77ec01aed",
+        "content_guidelines.md": "sha256:9e2e5bcf63c28b914d55bc70002a8919f2f4023f033da947e9928ad89438ba82",
+        "slide_patterns.md": "sha256:8cad7fae492dba64b8df87fc07dc4d6c449e0f0b8b769d01c8f0be9cbc4ac9e7"
+      }
+    },
+    "academic-research-skills": {
+      "source": "https://github.com/Imbad0202/academic-research-skills.git",
+      "tracked": true,
+      "branch": "main"
+    },
     "skillshare": {
       "source": "github.com/runkids/skillshare/skills/skillshare",
       "type": "github-subdir",

@@ -1,78 +1,82 @@
 ---
 name: literature-review
-description: Conduct a systematic literature review on an academic topic. Use when the user asks for a literature review, survey, or systematic overview of a research area.
+description: Conduct comprehensive literature reviews using multi-perspective dialogue simulation. Generate diverse expert personas, conduct grounded Q&A conversations, and synthesize findings into structured knowledge. Use when starting a new research project or writing a survey section.
 argument-hint: [topic]
-allowed-tools: Bash, Read, Glob, Grep, Write
 ---
 
-Conduct a systematic literature review on "$ARGUMENTS" using the `paper` and `paper-search` CLI tools.
+# Literature Review
 
-## 1. Define Scope
+Conduct deep literature reviews through multi-perspective dialogue and systematic search.
 
-Before searching, clarify with the user:
-- Topic boundaries and key terms
-- Year range (default: last 5 years)
-- Target venues or communities (if any)
-- Desired number of papers (default: 15-20 core papers)
+## Input
 
-## 2. Multi-Query Search
+- `$0` — Research topic or question
+- `$1` — Optional: specific focus or angle
 
-Search with multiple query variations to maximize coverage:
-```
-paper-search semanticscholar papers "<main query>" --limit 20 --year <range>
-paper-search semanticscholar papers "<synonym query>" --limit 20 --year <range>
-paper-search semanticscholar papers "<related query>" --limit 20 --year <range>
-paper-search google scholar "<topic>"
-```
+## References
 
-Deduplicate results by title/paper ID.
+- Multi-perspective dialogue prompts (STORM): `~/.claude/skills/literature-review/references/dialogue-prompts.md`
+- Literature review workflow (AgentLaboratory): `~/.claude/skills/literature-review/references/review-workflow.md`
 
-## 3. Triage
+## Scripts (from literature-search skill)
 
-For each unique paper found:
-```
-paper-search semanticscholar details <paper_id>
-paper skim <arxiv_id> --lines 2
+```bash
+# Search Semantic Scholar
+python ~/.claude/skills/deep-research/scripts/search_semantic_scholar.py --query "topic" --max-results 20
+
+# Search OpenAlex
+python ~/.claude/skills/literature-search/scripts/search_openalex.py --query "topic" --max-results 20
+
+# Search arXiv
+python ~/.claude/skills/deep-research/scripts/search_arxiv.py --query "topic" --max-results 10
 ```
 
-Categorize as: **highly relevant** / **somewhat relevant** / **not relevant**.
+## Workflow
 
-## 4. Deep Analysis
+### Step 1: Generate Expert Personas (from STORM)
+Given the topic, create 3-5 diverse expert personas:
+- Each represents a different perspective, role, or research angle
+- Example: "ML systems researcher focused on efficiency", "Theoretical statistician concerned with guarantees"
+- Use the persona generation prompts from references
 
-For highly relevant papers:
-```
-paper outline <arxiv_id>
-paper read <arxiv_id> introduction
-paper read <arxiv_id> method
-paper read <arxiv_id> results
-paper read <arxiv_id> conclusion
-```
+### Step 2: Multi-Perspective Dialogue
+For each persona, simulate a multi-turn Q&A conversation:
+1. **Persona asks a question** from their unique angle
+2. **Generate search queries** from the question
+3. **Search literature** using the search scripts
+4. **Synthesize an answer** grounded in retrieved papers with inline citations
+5. **Record the dialogue turn** with search results
+6. Repeat for 3-5 turns per persona
+7. End when persona says "Thank you so much for your help!"
 
-Take structured notes on each paper: problem, method, key results, limitations.
+### Step 3: Synthesize Knowledge
+- Combine all persona conversations into a unified knowledge base
+- Remove redundancy across personas
+- Organize by theme/subtopic
+- Generate an outline based on the collected information
 
-## 5. Citation Graph Exploration
+### Step 4: Generate Literature Review
+- Write a structured review organized by the generated outline
+- Every claim must be supported by a citation
+- Include a summary table of key papers (method, contribution, limitations)
 
-For seminal papers, find related work:
-```
-paper-search semanticscholar citations <paper_id> --limit 20
-paper-search semanticscholar references <paper_id> --limit 20
-```
+## Output
 
-Add any important papers discovered this way back to the triage step.
+A structured literature review with:
+1. **Outline** — Hierarchical topic structure
+2. **Per-section summaries** — Each grounded in retrieved papers
+3. **Paper database** — Structured entries for all reviewed papers
+4. **Knowledge gaps** — Identified areas needing further investigation
 
-## 6. Produce Report
+## Rules
 
-Organize findings **by theme, not by paper**. Include:
-- Overview of the field and its evolution
-- Key methods and approaches (with comparisons)
-- Main results and findings
-- Open questions and future directions
-- Complete reference list with paper IDs and URLs
-- BibTeX entries for all cited papers (use `paper bibtex <arxiv_id>` to generate)
+- Every sentence in the review must be supported by gathered information
+- If information is not found, explicitly state the gap
+- Cite broadly — cover diverse approaches, not just the most popular
+- Include recent papers (last 2-3 years) alongside foundational work
+- Use inline citations: "Smith et al. [1] propose..."
 
-## Guidelines
-
-- Aim for breadth first: cover all major approaches before going deep on any one.
-- Note citation counts and venues to gauge paper impact.
-- Flag contradictory findings explicitly.
-- Distinguish between empirical results and theoretical claims.
+## Related Skills
+- Upstream: [literature-search](../literature-search/), [deep-research](../deep-research/)
+- Downstream: [related-work-writing](../related-work-writing/), [research-planning](../research-planning/)
+- See also: [survey-generation](../survey-generation/)
