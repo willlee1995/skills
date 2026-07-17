@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ./hooks/wiki-session-start.ps1",
+        "timeout": 15
+      },
+      {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ./hooks/skillshare-session-start.ps1",
+        "timeout": 180
+      }
+    ]
+  }
+}
